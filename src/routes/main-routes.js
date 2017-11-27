@@ -9,6 +9,7 @@ router
   }) // 以/public开头则不用经过权限认证
   .all('/upload', controllers.upload.default)
   .get('/api/:name', controllers.api.Get)
+  .get('/detail/:uri', controllers.api.Detail)
   .post('/api/:name', controllers.api.Post)
   .put('/api/:name', controllers.api.Put)
   .del('/api/:name', controllers.api.Delect)
