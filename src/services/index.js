@@ -20,11 +20,12 @@ export const getListByLabel = async (label) => {
 
         SELECT ?subject ?other ?comment
         WHERE {
-            ?subject rdfs:label ${name} .
+            ?subject rdfs:label ?object .
             ?subject rdfs:label ?other .
             OPTIONAL {
                 ?subject rdfs:comment ?comment .
             }
+            filter(str(?object)="${label}")
         }
         LIMIT 20
      `;
