@@ -1,36 +1,14 @@
 //import request from 'request';
 import request from 'koa2-request';
 import {getListByLabel, getListByLabelOri, getDetailByUri} from '../services';
+import format from '../services/format';
 
 export let Get = async (ctx) => {
   let result = await getListByLabel(ctx.params.name);
   //let result = await getListByLabelOri(ctx.params.name);
-
   let fresult = JSON.parse(result.body).results.bindings;
-
-  let map = {};
-
-  //TODO 把各种语言的聚合到一块儿
-  fresult.forEach((obj) => {
-      let key = obj.subject.value;
-      if(map[key]) {
-          map[key]['labels'].push(obj.other.value);
-          if(obj.comment) {
-              map[key]['comments'].push(obj.comment.value);
-          }
-      } else {
-        map[key] = {};
-        map[key]['labels'] = [obj.other.value];
-        if(obj.comment) {
-            map[key]['labels'] = [obj.comment.value];
-        } else {
-            map[key]['comment'] = [];
-        }
-      }
-  });
-
   ctx.body = {
-    result: fresult,
+    result: format(fresult),
     name: ctx.params.name,
     para: ctx.query
   }
